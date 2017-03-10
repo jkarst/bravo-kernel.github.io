@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://bravo-kernel.com/"/>
-  <updated>2017-03-06T19:03:56.728Z</updated>
+  <updated>2017-03-10T22:24:57.000Z</updated>
   <id>http://bravo-kernel.com/</id>
   
   <author>
@@ -14,6 +14,117 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>How to make your CakePHP 3 API produce JSON API</title>
+    <link href="http://bravo-kernel.com/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/"/>
+    <id>http://bravo-kernel.com/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/</id>
+    <published>2017-03-10T20:10:24.000Z</published>
+    <updated>2017-03-10T22:24:57.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>In this follow-up post to
+<a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a>
+we will update our existing API so it will adhere to the
+<a href="http://jsonapi.org/" target="_blank" rel="external">JSON API specification</a> giving you the
+benefits of standardization and instant compatibility with JSON API supporting tools and frameworks
+like <a href="https://github.com/emberjs/data#a-brief-note-on-adapters" target="_blank" rel="external">Ember Data’s JSONAPIAdapter</a>.</p>
+<p><a href="https://app.getpostman.com/run-collection/197398a609a6d233a8c2" target="_blank" rel="external">&gt; API methods used in this post shared with Postman</a></p>
+<h2 id="Before-We-Begin"><a href="#Before-We-Begin" class="headerlink" title="Before We Begin"></a>Before We Begin</h2><p>This is part five of the CakePHP 3 REST API tutorial series:</p>
+<ol>
+<li><a href="/2015/04/how-to-build-a-cakephp-3-rest-api-in-minutes/">How to build a CakePHP 3 REST API in minutes</a></li>
+<li><a href="http://cakebox:4000/2015/04/how-to-use-a-cakephp-3-rest-api/" target="_blank" rel="external">How to use a CakePHP 3 REST API</a></li>
+<li><a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a></li>
+<li><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a></li>
+<li>How to make your CakePHP 3 API produce JSON API</li>
+</ol>
+<p>Before starting this tutorial either:</p>
+<ul>
+<li>complete the previous tutorial</li>
+<li>start fresh by using these
+<a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-make-your-cakephp-3-api-produce-jsonapi" target="_blank" rel="external">end-state application sources</a>,
+composer installing and running the database migration</li>
+</ul>
+<h2 id="1-Install-Neomerx-jsonapi"><a href="#1-Install-Neomerx-jsonapi" class="headerlink" title="1. Install Neomerx/jsonapi"></a>1. Install Neomerx/jsonapi</h2><p>The Crud JsonApiListener used to produce the JSON API
+depends on the <a href="https://github.com/neomerx/json-api" target="_blank" rel="external">neomerx/jsonapi</a>
+package so install that first by running:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require neomerx/json-api:^0.8.10</div></pre></td></tr></table></figure>
+<h2 id="2-Upgrade-project-packages"><a href="#2-Upgrade-project-packages" class="headerlink" title="2. Upgrade project packages"></a>2. Upgrade project packages</h2><p>To make sure your API is using an up-to-date version of CakePHP and the 
+required version of the Crud plugin now update your project’s
+composer packages by running:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer update</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Please note that the Crud JsonApiListener is not available in Crud releases prior to 4.4.0.</p>
+</blockquote>
+<h2 id="3-Disable-JWT-authentication"><a href="#3-Disable-JWT-authentication" class="headerlink" title="3. Disable JWT authentication"></a>3. Disable JWT authentication</h2><p>Since JWT authentication is unrelated to JSON API we will disable it by 
+removing the related lines in <code>src/Controller/Api/AppController</code>
+which should leave you with a file looking like this:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"><span class="keyword">namespace</span> <span class="title">App</span>\<span class="title">Controller</span>\<span class="title">Api</span>;</div><div class="line"></div><div class="line"><span class="keyword">use</span> <span class="title">Cake</span>\<span class="title">Controller</span>\<span class="title">Controller</span>;</div><div class="line"><span class="keyword">use</span> <span class="title">Cake</span>\<span class="title">Event</span>\<span class="title">Event</span>;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * AppController specific to API resources</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppController</span> <span class="keyword">extends</span> <span class="title">Controller</span></span></div><div class="line">&#123;</div><div class="line"></div><div class="line">    <span class="keyword">use</span> \<span class="title">Crud</span>\<span class="title">Controller</span>\<span class="title">ControllerTrait</span>;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">initialize</span><span class="params">()</span></span></div><div class="line">    &#123;</div><div class="line">        <span class="keyword">parent</span>::initialize();</div><div class="line"></div><div class="line">        <span class="keyword">$this</span>-&gt;loadComponent(<span class="string">'RequestHandler'</span>);</div><div class="line">        <span class="keyword">$this</span>-&gt;loadComponent(<span class="string">'Crud.Crud'</span>, [</div><div class="line">            <span class="string">'actions'</span> =&gt; [</div><div class="line">                <span class="string">'Crud.Index'</span>,</div><div class="line">                <span class="string">'Crud.View'</span>,</div><div class="line">                <span class="string">'Crud.Add'</span>,</div><div class="line">                <span class="string">'Crud.Edit'</span>,</div><div class="line">                <span class="string">'Crud.Delete'</span></div><div class="line">            ],</div><div class="line">            <span class="string">'listeners'</span> =&gt; [</div><div class="line">                <span class="string">'Crud.Api'</span>,</div><div class="line">                <span class="string">'Crud.ApiPagination'</span>,</div><div class="line">                <span class="string">'Crud.ApiQueryLog'</span></div><div class="line">            ]</div><div class="line">        ]);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>Even though the CakePHP and Crud upgrades were <strong>totally
+transparent</strong> while writing this post this might be a good
+moment to verify that your API’s <code>cocktails</code> endpoint is
+still producing the expected results using GET, POST, etc.</p>
+</blockquote>
+<h2 id="3-Enable-JSON-API"><a href="#3-Enable-JSON-API" class="headerlink" title="3. Enable JSON API"></a>3. Enable JSON API</h2><p>All that is needed now to make your API produce JSON API is opening
+<code>src/Controller/Api/AppController</code> and replacing the <code>Crud.Api</code>
+listener with <code>Crud.JsonAPi</code> so it looks like:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'listeners'</span> =&gt; [</div><div class="line">    <span class="string">'Crud.JsonApi'</span>,</div><div class="line">    <span class="string">'Crud.ApiPagination'</span>,</div><div class="line">    <span class="string">'Crud.ApiQueryLog'</span></div><div class="line">]</div></pre></td></tr></table></figure>
+<p>All done, seriously.</p>
+<h2 id="4-Using-the-new-API"><a href="#4-Using-the-new-API" class="headerlink" title="4. Using the new API"></a>4. Using the new API</h2><p>The JsonApiListener documentation contains very detailed
+<a href="http://crud.readthedocs.io/en/latest/listeners/jsonapi.html#response-formats" target="_blank" rel="external">usage descriptions</a>
+and since there no point in duplicating them here we will
+provide you with just one example to get you going.</p>
+<p><strong>Never forget:</strong></p>
+<ul>
+<li>ALL requests to your new API MUST use the <code>application/vnd.api+json</code> Accept Header</li>
+<li>ALL requests with post data MUST use the <code>application/vnd.api+json</code> Content-Type Header</li>
+</ul>
+<h3 id="View-action-GET"><a href="#View-action-GET" class="headerlink" title="View action (GET)"></a>View action (GET)</h3><p>For this example we are in the mood for a Mojito so we query 
+<code>http://cake3api.app/cocktails/3</code> making sure we are using:</p>
+<ul>
+<li><strong>HTTP Method</strong> <code>GET</code></li>
+<li><strong>Accept Header</strong> <code>application/vnd.api+json</code></li>
+</ul>
+<img src="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/api-request-headers-view.png" alt="API Request Headers for view action" title="API Request Headers for view action">
+<p>If things went well your API should return Status Code 200 (Success) with a response body in
+JSON API format looking similar to:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"data"</span>: &#123;</div><div class="line">    <span class="attr">"type"</span>: <span class="string">"cocktails"</span>,</div><div class="line">    <span class="attr">"id"</span>: <span class="string">"3"</span>,</div><div class="line">    <span class="attr">"attributes"</span>: &#123;</div><div class="line">      <span class="attr">"name"</span>: <span class="string">"Mojito"</span>,</div><div class="line">      <span class="attr">"description"</span>: <span class="string">"Rum based"</span>,</div><div class="line">      <span class="attr">"created"</span>: <span class="string">"2015-04-11T09:52:01+00:00"</span>,</div><div class="line">      <span class="attr">"modified"</span>: <span class="literal">null</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">"links"</span>: &#123;</div><div class="line">      <span class="attr">"self"</span>: <span class="string">"/api/cocktails/3"</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>See the Postman collection (top of page) for examples of <code>index</code>, <code>add</code>, <code>edit</code> and <code>delete</code>.</p>
+</blockquote>
+<h2 id="5-Make-it-better"><a href="#5-Make-it-better" class="headerlink" title="5. Make it better"></a>5. Make it better</h2><p>Even though the JsonApiListener is already quite feature-complete, some parts of the JSON API specification 
+(like <a href="http://jsonapi.org/format/#fetching-sparse-fieldsets" target="_blank" rel="external">Sparse Fieldsets</a> and query parameters) have
+not been implemented yet. Feel free to submit a PR for missing functionality and help work towards a
+full-featured implementation of the specification, the effort should be minimal.</p>
+<h2 id="Additional-reading"><a href="#Additional-reading" class="headerlink" title="Additional reading"></a>Additional reading</h2><ul>
+<li><a href="http://crud.readthedocs.io/en/latest/listeners/jsonapi.html" target="_blank" rel="external">Crud JsonApiListener documentation</a></li>
+<li><a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-make-your-cakephp-3-api-produce-jsonapi" target="_blank" rel="external">Git repository</a> with working end state application as produced by this tutorial</li>
+<li><a href="https://github.com/neomerx/json-api" target="_blank" rel="external">neomerx/jsonapi</a></li>
+</ul>
+<p><em>Hat tip to <a href="https://github.com/josbeir" target="_blank" rel="external">josbeir</a> for the inspiration found in his plugin.</em></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;In this follow-up post to
+&lt;a href=&quot;/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/&quot;&gt;How to add JWT Authentication to a Ca
+    
+    </summary>
+    
+      <category term="CakePHP" scheme="http://bravo-kernel.com/categories/cakephp/"/>
+    
+    
+      <category term="cakephp" scheme="http://bravo-kernel.com/tags/cakephp/"/>
+    
+      <category term="cakephp3" scheme="http://bravo-kernel.com/tags/cakephp3/"/>
+    
+      <category term="rest" scheme="http://bravo-kernel.com/tags/rest/"/>
+    
+      <category term="api" scheme="http://bravo-kernel.com/tags/api/"/>
+    
+      <category term="json api" scheme="http://bravo-kernel.com/tags/json-api/"/>
+    
+  </entry>
   
   <entry>
     <title>How to create responsive vertically aligned multiline radio button labels</title>
@@ -843,7 +954,7 @@ snapt Minecraft het niet)</p>
     <link href="http://bravo-kernel.com/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/"/>
     <id>http://bravo-kernel.com/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/</id>
     <published>2015-04-20T07:22:32.000Z</published>
-    <updated>2017-03-06T19:06:32.000Z</updated>
+    <updated>2017-03-10T22:16:04.000Z</updated>
     
     <content type="html"><![CDATA[<p>In this follow-up post to
 <a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a>
@@ -885,6 +996,7 @@ to prevent man in the middle attackers from seeing and stealing the tokens.</p>
 <li><a href="/2015/04/how-to-use-a-cakephp-3-rest-api/">How to use a CakePHP 3 REST API</a></li>
 <li><a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a></li>
 <li>How to add JWT Authentication to a CakePHP 3 REST API</li>
+<li><a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">How to make your CakePHP 3 API produce JSON API</a></li>
 </ol>
 <p>Before starting this tutorial either:</p>
 <ul>
@@ -1071,7 +1183,8 @@ by using the exact same query but <strong>this time removing</strong> the <code>
 <p>Should instantly return Status Code 401 (Unauthorized) with a JSON response body similar to:</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"success"</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">"data"</span>: &#123;</div><div class="line">        <span class="attr">"message"</span>: <span class="string">"You are not authorized to access that location."</span>,</div><div class="line">        <span class="attr">"url"</span>: <span class="string">"\/api\/cocktails.json"</span>,</div><div class="line">        <span class="attr">"code"</span>: <span class="number">401</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="Additional-reading"><a href="#Additional-reading" class="headerlink" title="Additional reading"></a>Additional reading</h2><ul>
-<li><a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-add-jwt-authentication-to-a-cakephp-3-rest-api" target="_blank" rel="external">EndGit repository</a> with working end state application produced by this tutorial</li>
+<li>Follow-up tutorial <a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">How to make your CakePHP 3 API produce JSON API</a></li>
+<li><a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-add-jwt-authentication-to-a-cakephp-3-rest-api" target="_blank" rel="external">Git repository</a> with working end state application as produced by this tutorial</li>
 <li>The <a href="https://github.com/ADmad/cakephp-jwt-auth" target="_blank" rel="external">CakePHP JWT Plugin</a> on Github</li>
 <li>The <a href="https://github.com/firebase/php-jwt" target="_blank" rel="external">PHP JWT Library</a> on Github</li>
 <li>The <a href="http://book.cakephp.org/3.0/en/index.html" target="_blank" rel="external">CakePHP 3 Book</a> and <a href="http://api.cakephp.org/3.0/" target="_blank" rel="external">CakePHP 3 API</a> documentation</li>
@@ -1110,7 +1223,7 @@ we wi
     <link href="http://bravo-kernel.com/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/"/>
     <id>http://bravo-kernel.com/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/</id>
     <published>2015-04-15T09:47:38.000Z</published>
-    <updated>2017-03-06T19:03:56.712Z</updated>
+    <updated>2017-03-10T22:14:02.000Z</updated>
     
     <content type="html"><![CDATA[<p>In this follow-up post to
 <a href="/2015/04/how-to-use-a-cakephp-3-rest-api/">How to use a CakePHP 3 REST API</a>
@@ -1125,6 +1238,7 @@ to our API resources through (only) <code>/api</code> prefixed URLs.</p>
 <li><a href="/2015/04/how-to-use-a-cakephp-3-rest-api/">How to use a CakePHP 3 REST API</a></li>
 <li>How to prefix route a CakePHP 3 REST API</li>
 <li><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a></li>
+<li><a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">How to make your CakePHP 3 API produce JSON API</a></li>
 </ol>
 <p>Before starting this tutorial either:</p>
 <ul>
@@ -1188,7 +1302,7 @@ CakePHP index page:</p>
 <img src="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/browser-cocktails-index.png" alt="Cocktails index" title="Cocktails index">
 <h2 id="Additional-reading"><a href="#Additional-reading" class="headerlink" title="Additional reading"></a>Additional reading</h2><ul>
 <li>Follow-up tutorial <a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a></li>
-<li><a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-prefix-route-a-cakephp3-rest-api" target="_blank" rel="external">Git repository</a> with working end state application produced by this tutorial</li>
+<li><a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-prefix-route-a-cakephp3-rest-api" target="_blank" rel="external">Git repository</a> with working end state application as produced by this tutorial</li>
 <li><a href="http://book.cakephp.org/3.0/en/development/routing.html" target="_blank" rel="external">CakePHP routing documentation</a></li>
 <li>The <a href="http://book.cakephp.org/3.0/en/index.html" target="_blank" rel="external">CakePHP 3 Book</a> and <a href="http://api.cakephp.org/3.0/" target="_blank" rel="external">CakePHP 3 API</a> documentation</li>
 </ul>
@@ -1222,7 +1336,7 @@ we will implement a
     <link href="http://bravo-kernel.com/2015/04/how-to-use-a-cakephp-3-rest-api/"/>
     <id>http://bravo-kernel.com/2015/04/how-to-use-a-cakephp-3-rest-api/</id>
     <published>2015-04-12T13:10:24.000Z</published>
-    <updated>2017-03-06T19:03:56.712Z</updated>
+    <updated>2017-03-10T22:13:53.000Z</updated>
     
     <content type="html"><![CDATA[<p>In this follow-up post to
 <a href="/2015/04/how-to-build-a-cakephp-3-rest-api-in-minutes/">How to build a CakePHP 3 REST API in minutes</a>
@@ -1249,6 +1363,7 @@ we  explore the inner workings of our new API.</p>
 <li>How to use a CakePHP 3 REST API</li>
 <li><a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a></li>
 <li><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a></li>
+<li><a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">How to make your CakePHP 3 API produce JSON API</a></li>
 </ol>
 <p>Before starting this tutorial either:</p>
 <ul>
@@ -1420,7 +1535,7 @@ removed <code>description</code> from the sortWhitelist array.</p>
     <link href="http://bravo-kernel.com/2015/04/how-to-build-a-cakephp-3-rest-api-in-minutes/"/>
     <id>http://bravo-kernel.com/2015/04/how-to-build-a-cakephp-3-rest-api-in-minutes/</id>
     <published>2015-04-12T11:22:21.000Z</published>
-    <updated>2017-03-06T19:03:56.712Z</updated>
+    <updated>2017-03-10T22:13:44.000Z</updated>
     
     <content type="html"><![CDATA[<p>Step-by-step instructions for creating a full featured RESTful API using CakePHP 3.</p>
 <p><a href="https://app.getpostman.com/run-collection/197398a609a6d233a8c2" target="_blank" rel="external"><img src="https://run.pstmn.io/button.svg" alt="Run in Postman"></a></p>
@@ -1430,6 +1545,7 @@ removed <code>description</code> from the sortWhitelist array.</p>
 <li><a href="/2015/04/how-to-use-a-cakephp-3-rest-api/">How to use a CakePHP 3 REST API</a></li>
 <li><a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a></li>
 <li><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a></li>
+<li><a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">How to make your CakePHP 3 API produce JSON API</a></li>
 </ol>
 <h2 id="1-Create-The-Application"><a href="#1-Create-The-Application" class="headerlink" title="1. Create The Application"></a>1. Create The Application</h2><p>For this tutorial (and the follow-up posts) we will create a fresh CakePHP 3
 application for our API:</p>
@@ -1846,51 +1962,6 @@ $ sudo pecl install xdebug
       <category term="xdebug" scheme="http://bravo-kernel.com/tags/xdebug/"/>
     
       <category term="php" scheme="http://bravo-kernel.com/tags/php/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>How to use variables in MSSQL</title>
-    <link href="http://bravo-kernel.com/2014/08/how-to-use-variables-in-mssql/"/>
-    <id>http://bravo-kernel.com/2014/08/how-to-use-variables-in-mssql/</id>
-    <published>2014-08-18T18:41:31.000Z</published>
-    <updated>2017-03-06T19:03:56.708Z</updated>
-    
-    <content type="html"><![CDATA[<p>To use variables in MSSQL queries simply declare and set them before using:</p>
-<pre><code>--
--- Declare and set variables
---
-DECLARE @migrationDate VARCHAR(100), @groupName VARCHAR(100)
-SET @migrationDate = &apos;2014-08-15&apos;
-SET @groupName = &apos;SOME-GROUP-NAME&apos;
-
---
--- Execute query using variables
---
-SELECT DISTINCT [username]
-  ,[groupname]
-  ,[migrationdate]
-FROM [MYDB].[dbo].[vw_my_special_view]
-WHERE [groupname] LIKE @groupName
-AND [migrationdate] LIKE @migrationDate
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;To use variables in MSSQL queries simply declare and set them before using:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;--
--- Declare and set variables
---
-DECLARE @mi
-    
-    </summary>
-    
-      <category term="Database" scheme="http://bravo-kernel.com/categories/database/"/>
-    
-    
-      <category term="mssql" scheme="http://bravo-kernel.com/tags/mssql/"/>
-    
-      <category term="database" scheme="http://bravo-kernel.com/tags/database/"/>
     
   </entry>
   

@@ -555,7 +555,7 @@ and will show you
     <link href="http://bravo-kernel.com/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/"/>
     <id>http://bravo-kernel.com/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/</id>
     <published>2017-03-10T20:10:24.000Z</published>
-    <updated>2017-03-13T21:02:44.618Z</updated>
+    <updated>2017-03-15T18:52:10.712Z</updated>
     
     <content type="html"><![CDATA[<p>In this follow-up post to
 <a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a>
@@ -571,7 +571,7 @@ like <a href="https://github.com/emberjs/data#a-brief-note-on-adapters" target="
 <li><a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">How to prefix route a CakePHP 3 REST API</a></li>
 <li><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a></li>
 <li>How to make your CakePHP 3 API produce JSON API</li>
-<li><a href="/2017-03-how-to-use-a-cakeph-3-api-as-the-data-backend-for-ember-in-30-minutes.md/">How to use a CakePHP API as the data backend for Ember in 30 minutes</a></li>
+<li><a href="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/">How to use a CakePHP API as the data backend for Ember in 30 minutes</a></li>
 </ol>
 <p>Before starting this tutorial either:</p>
 <ul>
@@ -649,6 +649,7 @@ which is a very good thing as we will start using CORS pretty heavily in the nex
 not been implemented yet. Feel free to submit a PR for missing functionality and help work towards a
 full-featured implementation of the specification, the effort should be minimal.</p>
 <h2 id="Additional-reading"><a href="#Additional-reading" class="headerlink" title="Additional reading"></a>Additional reading</h2><ul>
+<li>Follow-up tutorial <a href="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/">How to use a CakePHP API as the data backend for Ember in 30 minutes</a></li>
 <li><a href="http://crud.readthedocs.io/en/latest/listeners/jsonapi.html" target="_blank" rel="external">Crud JsonApiListener documentation</a></li>
 <li><a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-make-your-cakephp-3-api-produce-jsonapi" target="_blank" rel="external">Git repository</a> with working end state application as produced by this tutorial</li>
 <li><a href="https://github.com/neomerx/json-api" target="_blank" rel="external">neomerx/jsonapi</a></li>

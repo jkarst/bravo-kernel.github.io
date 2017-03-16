@@ -70,7 +70,7 @@ JSON API spec">
         <div class="icon"></div>
         <time datetime="2017-03-10T20:10:24.000Z"><a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">Mar 10 2017</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Mar 15 2017</span></span>
+			<span class="updated" title="Post Updated"><span>Mar 16 2017</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2017-03-10-how-to-make-your-cakephp-3-api-produce-jsonapi.md">Improve on Github</a></div>
       
@@ -131,10 +131,14 @@ still producing the expected results using GET, POST, etc.</p>
 listener with <code>Crud.JsonAPi</code> so it looks like:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'listeners'</span> =&gt; [</div><div class="line">    <span class="string">'Crud.JsonApi'</span>,</div><div class="line">    <span class="string">'Crud.ApiPagination'</span>,</div><div class="line">    <span class="string">'Crud.ApiQueryLog'</span></div><div class="line">]</div></pre></td></tr></table></figure>
 <p>All done, seriously.</p>
-<h2 id="4-Using-the-new-API"><a href="#4-Using-the-new-API" class="headerlink" title="4. Using the new API"></a>4. Using the new API</h2><p>The JsonApiListener documentation contains very detailed
+<h2 id="4-Using-the-new-API"><a href="#4-Using-the-new-API" class="headerlink" title="4. Using the new API"></a>4. Using the new API</h2><p>Please note that the JsonApiListener documentation contains very detailed
 <a href="http://crud.readthedocs.io/en/latest/listeners/jsonapi.html#response-formats" target="_blank" rel="external">usage descriptions</a>
-and since there no point in duplicating them here we will
-provide you with just one example to get you going.</p>
+and since there <strong>no point in duplicating them</strong> here we will
+provide you with just two basic examples to get you going.</p>
+<blockquote>
+<p>The <a href="https://app.getpostman.com/run-collection/197398a609a6d233a8c2" target="_blank" rel="external">Postman collection</a>
+contains examples of <code>index</code>, <code>view</code>, <code>add</code>, <code>edit</code> and <code>delete</code>.</p>
+</blockquote>
 <p><strong>Never forget:</strong></p>
 <ul>
 <li>ALL requests to your new API MUST use the <code>application/vnd.api+json</code> Accept Header</li>
@@ -150,9 +154,20 @@ provide you with just one example to get you going.</p>
 <p>If things went well your API should return Status Code 200 (Success) with a response body in
 JSON API format looking similar to:</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"data"</span>: &#123;</div><div class="line">    <span class="attr">"type"</span>: <span class="string">"cocktails"</span>,</div><div class="line">    <span class="attr">"id"</span>: <span class="string">"3"</span>,</div><div class="line">    <span class="attr">"attributes"</span>: &#123;</div><div class="line">      <span class="attr">"name"</span>: <span class="string">"Mojito"</span>,</div><div class="line">      <span class="attr">"description"</span>: <span class="string">"Rum based"</span>,</div><div class="line">      <span class="attr">"created"</span>: <span class="string">"2015-04-11T09:52:01+00:00"</span>,</div><div class="line">      <span class="attr">"modified"</span>: <span class="literal">null</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">"links"</span>: &#123;</div><div class="line">      <span class="attr">"self"</span>: <span class="string">"/api/cocktails/3"</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<blockquote>
-<p>See the Postman collection (top of page) for examples of <code>index</code>, <code>add</code>, <code>edit</code> and <code>delete</code>.</p>
-</blockquote>
+<h3 id="Add-action-POST"><a href="#Add-action-POST" class="headerlink" title="Add action (POST)"></a>Add action (POST)</h3><p>To create a new cocktail send a JSON API request to
+<code>http://cake3api.app/cocktails</code> making sure you are using:</p>
+<ul>
+<li><strong>HTTP Method</strong> <code>GET</code></li>
+<li><strong>Accept Header</strong> <code>application/vnd.api+json</code></li>
+<li><strong>Content-Type Header</strong> <code>application/vnd.api+json</code></li>
+</ul>
+<img src="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/api-request-headers-add.png" alt="API Request Headers for add action" title="API Request Headers for add action">
+<p>Also make sure to set the full or partial body data in (absolutely) correct JSON API format, e.g:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"data"</span>: &#123;</div><div class="line">    <span class="attr">"type"</span>: <span class="string">"cocktails"</span>,</div><div class="line">    <span class="attr">"attributes"</span>: &#123;</div><div class="line">      <span class="attr">"name"</span>: <span class="string">"Some cocktail"</span>,</div><div class="line">      <span class="attr">"description"</span>: <span class="string">"Some description"</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Now send the request.</p>
+<p>If things went well your API should return Status Code 201 (Success) with a response body in
+JSON API format looking similar to:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"data"</span>: &#123;</div><div class="line">    <span class="attr">"type"</span>: <span class="string">"cocktails"</span>,</div><div class="line">    <span class="attr">"id"</span>: <span class="string">"24"</span>,</div><div class="line">    <span class="attr">"attributes"</span>: &#123;</div><div class="line">      <span class="attr">"name"</span>: <span class="string">"Some name"</span>,</div><div class="line">      <span class="attr">"description"</span>: <span class="string">"None inspired description"</span>,</div><div class="line">      <span class="attr">"created"</span>: <span class="string">"2017-03-16T19:01:57+00:00"</span>,</div><div class="line">      <span class="attr">"modified"</span>: <span class="string">"2017-03-16T19:01:57+00:00"</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">"links"</span>: &#123;</div><div class="line">      <span class="attr">"self"</span>: <span class="string">"/api/cocktails/24"</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="5-Enabling-CORS-middleware"><a href="#5-Enabling-CORS-middleware" class="headerlink" title="5. Enabling CORS middleware"></a>5. Enabling CORS middleware</h2><p>Your API will be pretty useless if people (from other domains) won’t be able to use it
 so let’s enable it right now along with CakePHP’s
 <a href="https://book.cakephp.org/3.0/en/controllers/middleware.html" target="_blank" rel="external">new middleware functionality</a>

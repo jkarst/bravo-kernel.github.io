@@ -70,7 +70,7 @@ JSON API spec">
         <div class="icon"></div>
         <time datetime="2017-03-10T20:10:24.000Z"><a href="/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/">Mar 10 2017</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Mar 22 2017</span></span>
+			<span class="updated" title="Post Updated"><span>Mar 30 2017</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2017-03-10-how-to-make-your-cakephp-3-api-produce-jsonapi.md">Improve on Github</a></div>
       
@@ -182,10 +182,9 @@ by following the book’s <a href="https://book.cakephp.org/3.0/en/controllers/m
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require ozee31/cakephp-cors</div></pre></td></tr></table></figure>
 <p>Enable the plugin by adding this to <code>config/bootstrap.php</code>:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Plugin::load(<span class="string">'Cors'</span>, [<span class="string">'bootstrap'</span> =&gt; <span class="keyword">true</span>, <span class="string">'routes'</span> =&gt; <span class="keyword">false</span>]);</div></pre></td></tr></table></figure>
-<p>Lastly, make sure to disable the CORS ExceptionRenderer in <code>config/app.php</code>
-so it won’t override the JsonApiExceptionRenderer responsible for the JSON API
-validation errors:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'Cors'</span> =&gt; [</div><div class="line">  <span class="string">'exceptionRenderer'</span> =&gt; <span class="keyword">false</span></div><div class="line">]</div></pre></td></tr></table></figure>
+<p>Lastly, make sure to override the CORS ExceptionRenderer in <code>config/app.php</code>
+so the JSON API (validation) errors keep functioning as expected:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="string">'Cors'</span> =&gt; [</div><div class="line">  <span class="string">'exceptionRenderer'</span> =&gt; <span class="string">'Crud\Error\JsonApiExceptionRenderer'</span></div><div class="line">]</div></pre></td></tr></table></figure>
 <p>Please note that the plugin will allow CORS for all origins, all methods and all headers by default
 which is a very good thing as we will start using CORS pretty heavily in the next tutorial.</p>
 <h2 id="6-Make-it-better"><a href="#6-Make-it-better" class="headerlink" title="6. Make it better"></a>6. Make it better</h2><p>Even though the JsonApiListener is already quite feature-complete, some parts of the JSON API specification 

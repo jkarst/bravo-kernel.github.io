@@ -71,7 +71,7 @@ To prevent (yet another) pa">
         <div class="icon"></div>
         <time datetime="2015-04-20T07:22:32.000Z"><a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">Apr 20 2015</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Mar 22 2017</span></span>
+			<span class="updated" title="Post Updated"><span>Mar 30 2017</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-04-23-how-to-add-jwt-authentication-to-a-cakephp-3-rest-api.md">Improve on Github</a></div>
       
@@ -162,7 +162,6 @@ To enable password hashing for your application make sure to add both the class 
 <li>create a new user</li>
 <li>see the created user with hashed password</li>
 </ul>
-<p><br></p>
 <img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/browser-users-index.png" alt="Users index" title="Users index">
 <h2 id="3-Adding-the-JWT-Plugin"><a href="#3-Adding-the-JWT-Plugin" class="headerlink" title="3. Adding the JWT Plugin"></a>3. Adding the JWT Plugin</h2><p>Run the following command inside your application’s root directory to
 composer install the <a href="https://github.com/ADmad/cakephp-jwt-auth" target="_blank" rel="external">JwtAuth plugin</a>:</p>
@@ -218,7 +217,6 @@ body containing:</p>
 <li>the id of the new user</li>
 <li>a <code>token</code> field containing the new user’s JWT token</li>
 </ul>
-<p><br></p>
 <img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/jwt-primer-registration.png" alt="JWT primer: user registration" title="JWT primer: user registration">
 <h3 id="Create-the-register-action"><a href="#Create-the-register-action" class="headerlink" title="Create the /register  action"></a>Create the /register  action</h3><p>Because the CRUD plugin normally only returns the id of the new record we will add the JWT token
 to the JSON response body by extending the <code>add()</code> method with some custom CRUD
@@ -255,14 +253,12 @@ is valid by:</p>
 </ul>
 <p>If things went well you should see a <strong>green</strong> success message along with the user id and JWT exp
 claim as stored in the token:</p>
-<p><br></p>
 <img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/jwt-io-signature-verification.png" alt="jwt.io successful signature verification" title="jwt.io successful signature verification">
 <h2 id="9-Implementing-JWT-Token-Requests"><a href="#9-Implementing-JWT-Token-Requests" class="headerlink" title="9. Implementing JWT Token Requests"></a>9. Implementing JWT Token Requests</h2><h3 id="How-it-works-1"><a href="#How-it-works-1" class="headerlink" title="How it works"></a>How it works</h3><p>Users can request their JWT token by JSON posting their username and password to the <code>/token</code> action
 after which AuthComponent will use FormAuthenticate (and thus not JwtAuth) to
 validate the credentials.</p>
 <p>If validation is successful a JSON 200 response (Success) will be returned with a response
 body containing the JWT token.</p>
-<p><br></p>
 <img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/jwt-primer-token.png" alt="JWT primer: token request" title="JWT primer: token request">
 <h3 id="Create-the-token-action"><a href="#Create-the-token-action" class="headerlink" title="Create the /token action"></a>Create the /token action</h3><p>To implement token requests add the following <code>token()</code> method to <code>src/Controller/Api/UsersController.php</code>:</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">token</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    $user = <span class="keyword">$this</span>-&gt;Auth-&gt;identify();</div><div class="line">    <span class="keyword">if</span> (!$user) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnauthorizedException(<span class="string">'Invalid username or password'</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">$this</span>-&gt;set([</div><div class="line">        <span class="string">'success'</span> =&gt; <span class="keyword">true</span>,</div><div class="line">        <span class="string">'data'</span> =&gt; [</div><div class="line">            <span class="string">'token'</span> =&gt; JWT::encode([</div><div class="line">                <span class="string">'sub'</span> =&gt; $user[<span class="string">'id'</span>],</div><div class="line">                <span class="string">'exp'</span> =&gt;  time() + <span class="number">604800</span></div><div class="line">            ],</div><div class="line">            Security::salt())</div><div class="line">        ],</div><div class="line">        <span class="string">'_serialize'</span> =&gt; [<span class="string">'success'</span>, <span class="string">'data'</span>]</div><div class="line">    ]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -287,7 +283,6 @@ if the tests below are not functioning as described.</p>
 <h3 id="How-it-works-2"><a href="#How-it-works-2" class="headerlink" title="How it works"></a>How it works</h3><p>When accessing an API resource that requires authentication the JWT Plugin will look for a token
 in the <code>Authorization</code> header and will validate it using the <code>Salt</code> value used by your application.</p>
 <p>If validation is successful a JSON 200 response (Success) will be returned with application produced body.</p>
-<p><br></p>
 <img src="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/jwt-primer-authentication.png" alt="JWT primer: authentication process" title="JWT primer: authentication process">
 <p><strong>Notes:</strong></p>
 <ul>

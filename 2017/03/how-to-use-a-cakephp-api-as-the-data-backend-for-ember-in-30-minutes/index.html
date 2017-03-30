@@ -68,7 +68,7 @@ we will show you how easy it is to use your CakePHP API as the backend for a">
         <div class="icon"></div>
         <time datetime="2017-03-13T18:00:00.000Z"><a href="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/">Mar 13 2017</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Mar 28 2017</span></span>
+			<span class="updated" title="Post Updated"><span>Mar 30 2017</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2017-03-13-how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes.md">Improve on Github</a></div>
       
@@ -146,12 +146,10 @@ using Ubuntu 14.04) as nothing more than an example:</p>
 to generate applications, routes, models, etc. We will generate a fresh Ember application
 named <code>ember-frontend</code> by running:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> /path/to/your/projects/directory</div><div class="line">ember new ember-frontend</div><div class="line"><span class="built_in">cd</span> ember-frontend</div></pre></td></tr></table></figure>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/01-ember-cli-new-application.png" alt="Screenshot of ember-cli generating the Ember application" title="Screenshot of ember-cli generating the Ember application">
 <h2 id="4-Meeting-Ember"><a href="#4-Meeting-Ember" class="headerlink" title="4. Meeting Ember"></a>4. Meeting Ember</h2><p>Since this is basically all that is needed to create a new Ember application this might be a good moment
 to take a quick look at the files and folders to get a quick first impression of the application structure.</p>
 <p>To see your Ember application in action run <code>ember serve</code> and browse to <code>http://cakebox:4200</code>:</p>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/02-ember-welcome-page.png" alt="Screenshot of Ember welcome page" title="Screenshot of Ember welcome page">
 <p>To continue this tutorial without the Tomster mascotte
 open <code>templates/application.hbs</code> and remove the following line:</p>
@@ -197,7 +195,6 @@ it look like this:</p>
 <li>browse to your Ember application at <code>cakebox:4200/cocktails</code></li>
 <li>make sure it displays the records as found in your CakePHP database:</li>
 </ul>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/03-ember-showing-data-from-cakephp-api-index-action.png" alt="Ember showing data fetched from CakePHP API" title="Ember showing data fetched from CakePHP API">
 <h2 id="8-Using-Ember-Inspector"><a href="#8-Using-Ember-Inspector" class="headerlink" title="8. Using Ember Inspector"></a>8. Using Ember Inspector</h2><p>The Ember Inspector in Chrome will help you get a better understanding of the underlying
 API magic so let’s zoom in on that subject before continuing.</p>
@@ -208,7 +205,6 @@ API magic so let’s zoom in on that subject before continuing.</p>
 <li>selecting the <code>Network</code> tab</li>
 <li>browsing to <code>cakebox:4200/cocktails</code></li>
 </ul>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/04-ember-inspector-network.png" alt="Ember Inspector API network resource" title="Ember Inspector API network resource">
 <ul>
 <li><strong>upper arrow</strong>: tells us that a network resource named <code>cocktails</code> was fetched
@@ -217,7 +213,6 @@ using jquery (executed by Ember Data)</li>
 </ul>
 <h3 id="Inspecting-API-Resource-Headers"><a href="#Inspecting-API-Resource-Headers" class="headerlink" title="Inspecting API Resource Headers"></a>Inspecting API Resource Headers</h3><p>To zoom in on the API resource and inspect the headers simply click <code>cocktails</code> which
 should give you something like:</p>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/05-ember-inspector-api-resource-zoom-headers.png" alt="Ember Inspector zoom in on API network resource headers" title="Ember Inspector zoom in on API network resource headers">
 <ul>
 <li><strong>upper arrow</strong>: proves the resource is fetched from our CakePHP API</li>
@@ -228,7 +223,6 @@ should give you something like:</p>
 the <code>Response</code> tab. This should look more than familiar since you have implemented
 JSON API during the previous tutorial (pretty cool).</p>
 <p><em>FYI the <code>Preview</code> tab will show the exact same results but objectied for easy click-through.</em></p>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/06-ember-inspector-api-resource-response.png" alt="Ember Inspector show API response" title="Ember Inspector show API response">
 <h3 id="Inspecting-Ember-Data-records"><a href="#Inspecting-Ember-Data-records" class="headerlink" title="Inspecting Ember Data records"></a>Inspecting Ember Data records</h3><p>The Ember Inspector is really useful when we want to see how our
 API data is being used by Ember. To make this more clear:</p>
@@ -242,11 +236,9 @@ API data is being used by Ember. To make this more clear:</p>
 <li>the attributes are corresponding to the Ember <code>cocktail</code> model we created earlier</li>
 <li>and are thus missing the <code>modified</code> attribute we excluded (even though our API is servicing it)</li>
 </ul>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/07-ember-inspector-api-data-main.png" alt="Ember Inspector Ember Data main" title="Ember Inspector Ember Data main">
 <h3 id="Inspecting-Ember-Data-record-details"><a href="#Inspecting-Ember-Data-record-details" class="headerlink" title="Inspecting Ember Data record details"></a>Inspecting Ember Data record details</h3><p>Every record contains very detailed information which is revealed when clicking a record.</p>
 <p><em>Relationship information (<code>belongsTo</code>, <code>hasMany</code>) will appear in the <code>Flags</code> section when applicable.</em></p>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/08-ember-inspector-api-record-details.png" alt="Ember Inspector Ember Data record details" title="Ember Inspector Ember Data record details">
 <h2 id="9-Adding-the-delete-action"><a href="#9-Adding-the-delete-action" class="headerlink" title="9. Adding the delete action"></a>9. Adding the delete action</h2><p>Ember uses <a href="https://guides.emberjs.com/v1.13.0/templates/actions/" target="_blank" rel="external">template actions</a>
 to let users interact with data so let’s add one
@@ -268,7 +260,6 @@ and update it to look like this:</p>
 <li>making sure it now displays <code>Delete</code> buttons</li>
 <li>pressing one of the <code>Delete</code> buttons (and confirming the delete)</li>
 </ul>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/09-delete-action-page.png" alt="Ember delete action page" title="Ember delete action page">
 <p>If things went well:</p>
 <ul>
@@ -282,7 +273,6 @@ and update it to look like this:</p>
 <li>refreshing the page should no longer show the deleted record</li>
 <li>you should by now be quite impressed with how easy that actually was</li>
 </ul>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/10-delete-action-two-requests.png" alt="Ember delete action two requests" title="Ember delete action two requests">
 <h2 id="10-Adding-the-add-action"><a href="#10-Adding-the-add-action" class="headerlink" title="10. Adding the add action"></a>10. Adding the add action</h2><p>Without going into details we will create an
 <a href="https://guides.emberjs.com/v2.11.0/tutorial/subroutes/#toc-toggle" target="_blank" rel="external">Ember nested route</a>
@@ -317,7 +307,6 @@ Ember frontend by:</p>
 </li>
 <li>you should be able to see the new record in your CakePHP database</li>
 </ul>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/11-add-action-page.png" alt="Screenshot of Ember add action page" title="Screenshot of Ember add action page">
 <h2 id="11-Adding-the-view-edit-actions"><a href="#11-Adding-the-view-edit-actions" class="headerlink" title="11. Adding the view/edit actions"></a>11. Adding the view/edit actions</h2><p>Almost there.</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ember generate route cocktails/edit</div></pre></td></tr></table></figure>
@@ -330,12 +319,10 @@ Ember frontend by:</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">h3</span>&gt;</span>Edit existing Cocktail (id = &#123;&#123;model.id&#125;&#125;)<span class="tag">&lt;/<span class="name">h3</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">form</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;&#123;input value=model.name&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span>&#123;&#123;input value=model.description&#125;&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"button alert small"</span> &#123;&#123;<span class="attr">action</span> '<span class="attr">saveCocktail</span>' <span class="attr">model</span>&#125;&#125;&gt;</span>Save<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>All done, browse to <code>http://cakebox:4200/cocktails/edit/3</code> and verify that you can
 view, edit and save the record.</p>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/12-view-edit-action-page.png" alt="Screenshot of Ember view/edit action page" title="Screenshot of Ember view/edit action page">
 <h2 id="Bonus-Relational-Data"><a href="#Bonus-Relational-Data" class="headerlink" title="Bonus: Relational Data"></a>Bonus: Relational Data</h2><p>For simplicity’s sake we did not touch the subject in this tutorial but… Ember Data will
 also (automatically) detect and handle your API’s <code>belongsTo</code> and <code>hasMany</code> relationships
 as can seen in the following screenshot:</p>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/13-relationships.png" alt="Screenshot of Ember data relationships" title="Screenshot of Ember data relationships">
 <p>Please consult the Ember documentation for more information but enabling the
 above relationships was as easy as adding them to the
@@ -349,7 +336,6 @@ screenshot below where:</p>
 <li>your API is returning the 422 validation error along with validation error messages</li>
 <li>Ember Data picks up the validation messages and makes them avaible for display on the page</li>
 </ul>
-<p><br></p>
 <img src="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/14-validation-errors.png" alt="Screenshot of Ember data validation errors" title="Screenshot of Ember data validation errors">
 <h2 id="Getting-help"><a href="#Getting-help" class="headerlink" title="Getting help"></a>Getting help</h2><p>Both CakePHP and Ember have very friendly online communities that are more than willing to help
 you out if you encounter any problems so make sure to join:</p>

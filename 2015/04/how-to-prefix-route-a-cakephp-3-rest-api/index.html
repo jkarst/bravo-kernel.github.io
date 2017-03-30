@@ -71,7 +71,7 @@ so we can benefit from clean controller logic separation an">
         <div class="icon"></div>
         <time datetime="2015-04-15T09:47:38.000Z"><a href="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/">Apr 15 2015</a></time>
 		
-			<span class="updated" title="Post Updated"><span>Mar 13 2017</span></span>
+			<span class="updated" title="Post Updated"><span>Mar 30 2017</span></span>
         
 		<div class="github-improve"><a href="https://github.com/bravo-kernel/bravo-kernel.github.io/tree/source/source/_posts/2015-04-15-how-to-prefix-route-a-cakephp-3-rest-api.md">Improve on Github</a></div>
       
@@ -151,13 +151,11 @@ went will it: </p>
 <li>should no longer produce a JSON/XML response</li>
 <li>should instead show an HTML <code>MissingController</code> exception similar to the one below</li>
 </ul>
-<p><br></p>
 <img src="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/browser-missing-controller.png" alt="Cocktails index after prefixing route" title="Cocktails index after prefixing route">
 <h3 id="3-Test-non-API-access"><a href="#3-Test-non-API-access" class="headerlink" title="3. Test non-API access"></a>3. Test non-API access</h3><p>Even though we have restricted API access to the <code>/api</code> prefix all non-API requests should still
 function as expected.</p>
 <p>To verify browe to <code>http://cake3api.app/cocktails</code> which should still produce the familiar
 CakePHP index page:</p>
-<p><br></p>
 <img src="/2015/04/how-to-prefix-route-a-cakephp-3-rest-api/browser-cocktails-index.png" alt="Cocktails index" title="Cocktails index">
 <h2 id="Additional-reading"><a href="#Additional-reading" class="headerlink" title="Additional reading"></a>Additional reading</h2><ul>
 <li>Follow-up tutorial <a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a></li>

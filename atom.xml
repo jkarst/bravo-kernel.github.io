@@ -536,14 +536,14 @@ and will show you
     <link href="http://bravo-kernel.com/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/"/>
     <id>http://bravo-kernel.com/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/</id>
     <published>2017-03-10T20:10:24.000Z</published>
-    <updated>2017-04-15T10:56:27.486Z</updated>
+    <updated>2017-05-12T17:10:51.784Z</updated>
     
     <content type="html"><![CDATA[<p>In this follow-up post to
 <a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a>
-we will update our existing API so it will adhere to the
-<a href="http://jsonapi.org/" target="_blank" rel="external">JSON API specification</a> giving you the
-benefits of standardization and instant compatibility with JSON API supporting tools and frameworks
-like <a href="https://github.com/emberjs/data#a-brief-note-on-adapters" target="_blank" rel="external">Ember Data’s JSONAPIAdapter</a>.</p>
+we will update our existing API so it will produce 
+<a href="http://jsonapi.org/" target="_blank" rel="external">JSON API</a> compliant output giving you the
+benefits of standardization and instant compatibility with JSON API supporting tools 
+like <a href="https://github.com/emberjs/data#a-brief-note-on-adapters" target="_blank" rel="external">Ember Data</a>.</p>
 <p><a href="https://app.getpostman.com/run-collection/197398a609a6d233a8c2" target="_blank" rel="external">&gt; API methods used in this post shared with Postman</a></p>
 <h2 id="Before-We-Begin"><a href="#Before-We-Begin" class="headerlink" title="Before We Begin"></a>Before We Begin</h2><p>This is part five of the CakePHP 3 REST API tutorial series:</p>
 <ol>
@@ -561,17 +561,16 @@ like <a href="https://github.com/emberjs/data#a-brief-note-on-adapters" target="
 <a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-make-your-cakephp-3-api-produce-jsonapi" target="_blank" rel="external">end-state application sources</a>,
 composer installing and running the database migration</li>
 </ul>
-<h2 id="1-Install-Neomerx-jsonapi"><a href="#1-Install-Neomerx-jsonapi" class="headerlink" title="1. Install Neomerx/jsonapi"></a>1. Install Neomerx/jsonapi</h2><p>The Crud JsonApiListener used to produce the JSON API
-depends on the <a href="https://github.com/neomerx/json-api" target="_blank" rel="external">neomerx/jsonapi</a>
-package so install that first by running:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require neomerx/json-api:^0.8.10</div></pre></td></tr></table></figure>
-<h2 id="2-Upgrade-project-packages"><a href="#2-Upgrade-project-packages" class="headerlink" title="2. Upgrade project packages"></a>2. Upgrade project packages</h2><p>To make sure your API is using an up-to-date version of CakePHP and the 
+<h2 id="1-Update-your-project"><a href="#1-Update-your-project" class="headerlink" title="1. Update your project"></a>1. Update your project</h2><p>To make sure your API is using an up-to-date version of CakePHP and the 
 required version of the Crud plugin now update your project’s
 composer packages by running:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer update</div></pre></td></tr></table></figure>
-<blockquote>
-<p>Please note that the Crud JsonApiListener is not available in Crud releases prior to 4.4.0.</p>
-</blockquote>
+<h2 id="2-Install-required-composer-packages"><a href="#2-Install-required-composer-packages" class="headerlink" title="2. Install required composer packages"></a>2. Install required composer packages</h2><p>Make sure to update crud to at least version 5.0.0:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require friendsofcake/crud:^5.0</div></pre></td></tr></table></figure>
+<p>Remove any previous version of the neomerx package:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer remove neomerx/json-api</div></pre></td></tr></table></figure>
+<p>Lastly, install the Crud JsonApi listener addon by running:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require friendsofcake/crud-json-api</div></pre></td></tr></table></figure>
 <h2 id="3-Disable-JWT-authentication"><a href="#3-Disable-JWT-authentication" class="headerlink" title="3. Disable JWT authentication"></a>3. Disable JWT authentication</h2><p>Since JWT authentication is unrelated to JSON API we will disable it by 
 removing the related lines in <code>src/Controller/Api/AppController</code>
 which should leave you with a file looking like this:</p>
@@ -585,7 +584,7 @@ still producing the expected results using GET, POST, etc.</p>
 <h2 id="3-Enable-JSON-API"><a href="#3-Enable-JSON-API" class="headerlink" title="3. Enable JSON API"></a>3. Enable JSON API</h2><p>All that is needed now to make your API produce JSON API is opening
 <code>src/Controller/Api/AppController</code> and replacing the <code>Crud.Api</code>
 listener with <code>Crud.JsonAPi</code> so it looks like:</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'listeners'</span> =&gt; [</div><div class="line">    <span class="string">'Crud.JsonApi'</span>,</div><div class="line">    <span class="string">'Crud.ApiPagination'</span>,</div><div class="line">    <span class="string">'Crud.ApiQueryLog'</span></div><div class="line">]</div></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="string">'listeners'</span> =&gt; [</div><div class="line">    <span class="string">'CrudJsonApi.JsonApi'</span>,</div><div class="line">    <span class="string">'CrudJsonApi.Pagination'</span>, <span class="comment">// Pagination != ApiPagination</span></div><div class="line">    <span class="string">'Crud.ApiQueryLog'</span></div><div class="line">]</div></pre></td></tr></table></figure>
 <p>All done, seriously.</p>
 <h2 id="4-Using-the-new-API"><a href="#4-Using-the-new-API" class="headerlink" title="4. Using the new API"></a>4. Using the new API</h2><p>Please note that the JsonApiListener documentation contains very detailed
 <a href="http://crud.readthedocs.io/en/latest/listeners/jsonapi.html#response-formats" target="_blank" rel="external">usage descriptions</a>

@@ -536,7 +536,7 @@ and will show you
     <link href="http://bravo-kernel.com/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/"/>
     <id>http://bravo-kernel.com/2017/03/how-to-make-your-cakephp-3-api-produce-jsonapi/</id>
     <published>2017-03-10T20:10:24.000Z</published>
-    <updated>2017-05-12T17:10:51.784Z</updated>
+    <updated>2017-05-12T17:13:36.308Z</updated>
     
     <content type="html"><![CDATA[<p>In this follow-up post to
 <a href="/2015/04/how-to-add-jwt-authentication-to-a-cakephp-3-rest-api/">How to add JWT Authentication to a CakePHP 3 REST API</a>
@@ -569,7 +569,9 @@ composer packages by running:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require friendsofcake/crud:^5.0</div></pre></td></tr></table></figure>
 <p>Remove any previous version of the neomerx package:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer remove neomerx/json-api</div></pre></td></tr></table></figure>
-<p>Lastly, install the Crud JsonApi listener addon by running:</p>
+<p>Lastly, install the
+<a href="https://github.com/FriendsOfCake/crud-json-api" target="_blank" rel="external">Crud JsonApi listener</a>
+by running:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require friendsofcake/crud-json-api</div></pre></td></tr></table></figure>
 <h2 id="3-Disable-JWT-authentication"><a href="#3-Disable-JWT-authentication" class="headerlink" title="3. Disable JWT authentication"></a>3. Disable JWT authentication</h2><p>Since JWT authentication is unrelated to JSON API we will disable it by 
 removing the related lines in <code>src/Controller/Api/AppController</code>
@@ -648,6 +650,7 @@ which is a very good thing as we will start using CORS pretty heavily in the nex
 not been implemented yet. Feel free to submit a PR for missing functionality and help work towards a
 full-featured implementation of the specification, the effort should be minimal.</p>
 <h2 id="Additional-reading"><a href="#Additional-reading" class="headerlink" title="Additional reading"></a>Additional reading</h2><ul>
+<li><a href="https://crud-json-api.readthedocs.io/en/latest/" target="_blank" rel="external">Crud JsonApiListener documentation</a></li>
 <li>Follow-up tutorial <a href="/2017/03/how-to-use-a-cakephp-api-as-the-data-backend-for-ember-in-30-minutes/">How to use a CakePHP API as the data backend for Ember in 30 minutes</a></li>
 <li><a href="http://crud.readthedocs.io/en/latest/listeners/jsonapi.html" target="_blank" rel="external">Crud JsonApiListener documentation</a></li>
 <li><a href="https://github.com/bravo-kernel/application-examples/tree/master/blog-how-to-make-your-cakephp-3-api-produce-jsonapi" target="_blank" rel="external">Git repository</a> with working end state application as produced by this tutorial</li>

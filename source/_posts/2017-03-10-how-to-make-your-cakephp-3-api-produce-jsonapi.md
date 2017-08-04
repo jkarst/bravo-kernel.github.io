@@ -257,7 +257,7 @@ also respecting CORS headers:
 ```php
     'Error' => [
         'errorLevel' => E_ALL & ~E_DEPRECATED,
-        'exceptionRenderer' => '\Crud\Error\JsonApiExceptionRenderer',
+        'exceptionRenderer' => '\CrudJsonApi\Error\JsonApiExceptionRenderer',
         'skipLog' => [],
         'log' => true,
         'trace' => true,
